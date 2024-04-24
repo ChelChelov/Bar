@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'Темный ром': 40,	
 		'Амаро': 20,
 		'Сироп корица': 20		    
-		  },
+		},
 		{ name: 'Занзібар',
 		'Білий ром': 30,	
 		'Темний ром': 30,
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'Сироп малина': 10,
 		'Сироп кориця': 10,
 		'Цукровий сироп': 10		    
-		  },
+		},
 		{ name: 'Канада',
 		'Бурбон': 20,	
 		'Коньяк': 20,	
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'Горілка': 15,	
 		'Хайзелнат сироп': 7.5,
 		'Кориця сироп': 7.5		    
-		  },
+		},
 		{ name: 'Кримський міст',
 		'Горілка': 20,	
 		'Сироп кокос': 5,
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'Водка': 50,	
 		'Сироп Бузина': 25,
 		'Экстра-драй вермут': 20		    
-		  },
+		},
 		{ name: 'Бейліз Бьюті',
 		'Горілка': 60,	
 		'Сироп маракуя': 15,
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'Горілка': 20,	
 		'Triple sec': 30,
 		'Лікер Диня': 30		    
-		  },
+		},
 		{ name: 'Літачок',
 		'Бурбон': 25,	
 		'Чінар': 25,
@@ -233,6 +233,11 @@ const cocktails =
 	'вермут червоний': 30,
 	'біттер': 30		    
 	},
+	{ name: 'Негроні',
+	'Джин Біфітер': 30,	
+	'Біттер': 30,
+	'Вермут красный': 30		    
+	},
 	{ name: 'Зомбі',
 	'Білий ром': 25,	
 	'Темний ром': 25,
@@ -263,8 +268,7 @@ function calculateIngredients (total, cocktail) {
 			newCoctail[key] = parseFloat(newCoctail[key].toFixed(2));
 		}
 	});
-
-	console.log(newCoctail);
+	return showCocktail(newCoctail);
 }
 
 //Function to take an object and return sum of the values of this object if the type of value is number
@@ -280,4 +284,20 @@ function sumOfIngredients (cocktail) {
 	return sumOfIngr;
 }
 
-calculateIngredients(1000, cocktails[1]);
+//Function return string of all cocktail keys and values
+function showCocktail (cocktail) {
+	let presetList = '';
+
+	for (let key in cocktail) {
+		presetList += `${key}: ${cocktail[key]}\n`;
+		// if (cocktail[Object.values(cocktail).length - 1] != cocktail[key]) {
+		// 	presetList += '\n';
+		// }
+	}
+
+	return presetList;
+}
+
+// calculateIngredients(1000, cocktails[1]);
+// console.log(showCocktail(cocktails[1]));
+console.log(calculateIngredients(1000, cocktails[1]));
