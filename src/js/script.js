@@ -185,97 +185,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		return 0;
 	});
 
-	// Event listener to each cocktail list item
-    function changeTextColorToRedOnClick() {
-        document.querySelectorAll('.cocktail-list__item').forEach(item => {
-            item.addEventListener('click', event => {
-                // Remove red color from all other cocktail list items
-                document.querySelectorAll('.cocktail-list__item').forEach(otherItem => {
-                    if (otherItem !== event.target) {
-                        otherItem.style.color = ''; // Reset color to default
-                    }
-                });
-
-                // Change the text color to red for the clicked item
-                event.target.style.color = 'red';
-            });
-        });
-    }
-
-	const cocktailList = document.getElementById('cocktail-list');
-
-    // Function to display the list of cocktails
-    function displayCocktails(cocktails) {
-        cocktailList.innerHTML = '';
-        cocktails.forEach(cocktail => {
-            const listItem = document.createElement('div');
-            listItem.textContent = cocktail.name;
-            listItem.classList.add('cocktail-list__item');
-            cocktailList.append(listItem);
-        });
-		changeTextColorToRedOnClick();
-    }
-
-    // Function to filter cocktails based on user input
-    function filterCocktails(inputText) {
-        const filteredCocktails = cocktails.filter(cocktail => {
-            return cocktail.name.toLowerCase().includes(inputText.toLowerCase());
-        });
-        displayCocktails(filteredCocktails);
-    }
-
-    // Event listener for form submission
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); 
-        const inputText = document.getElementById('textInput').value;
-        filterCocktails(inputText);
-    });
-
-    // Event listener for input field changes
-    const inputField = document.getElementById('textInput');
-    inputField.addEventListener('input', function() {
-        const inputText = inputField.value;
-        filterCocktails(inputText);
-    });
-
-	displayCocktails(cocktails);
-});
-
-
-// Test zone
-
-const cocktails = 
-[
-	{ name: 'Бульвардьє',
-	'бурбон': 45,	
-	'вермут червоний': 30,
-	'біттер': 30		    
-	},
-	{ name: 'Негроні',
-	'Джин Біфітер': 30,	
-	'Біттер': 30,
-	'Вермут красный': 30		    
-	},
-	{ name: 'Зомбі',
-	'Білий ром': 25,	
-	'Темний ром': 25,
-	'Золотий ром': 25,
-	'Лікер тріплсек': 15,
-	'Сироп малина': 10,
-	'Сироп кориця': 10,
-	'Цукровий сироп': 10		    
-  	},
-	{ name: 'Май Тай',
-	'Білий ром': 30,	
-	'Темний ром': 30,
-	'Золотий ром': 30,
-	'Тріпл сек': 15,		
-	'Лікер Мигдаль': 15,
-	'Карамель сироп': 15		    
-	}
-];
-
 	//Эта функция принимает остаток премикса и объект этого премикса и выводит в консоль кол-во ингредиентов в соответствии с остатком
 	function calculateIngredients (total, cocktail) {
 		const newCoctail = {...cocktail};
@@ -311,13 +220,109 @@ const cocktails =
 		for (let key in cocktail) {
 			presetList += `${key}: ${cocktail[key]}`;
 			if (key !== lastKey) {
-				presetList += '\n'; 
+				presetList += '<br>'; 
 			}
 		}
 		return presetList;
 	}
 
-// calculateIngredients(1000, cocktails[1]);
-// console.log(showCocktail(cocktails[1]));
+	// Function add form into cocktail-list
+	function addFormToCalculateWindow() {
+		const cocktailList = document.getElementById('cocktail-list');
 
-console.log(showCocktail(calculateIngredients(10000, cocktails[0])));
+		const form = document.createElement('form');
+		form.classList.add('calculate-form');
+		form.action = '/submit';
+		form.method = 'post';
+
+		const label = document.createElement('label');
+		label.htmlFor = 'number';
+		label.textContent = 'Остаток(мл):';
+
+		const input = document.createElement('input');
+		input.type = 'number';
+		input.id = 'number';
+		input.name = 'number';
+		input.required = true;
+
+		const submitButton = document.createElement('button');
+		submitButton.type = 'submit';
+		submitButton.classList.add('calculate-button');
+		submitButton.textContent = 'Рассчитать';
+
+		const backButton = document.createElement('button');
+		backButton.type = 'button'; // Button type to prevent form submission
+		backButton.classList.add('back-button');
+		backButton.textContent = 'Back to Cocktail List';
+		backButton.addEventListener('click', () => {
+			displayCocktails(cocktails);
+		});
+
+		form.append(label);
+		form.append(input);
+		form.append(document.createElement('br'));
+		form.append(submitButton);
+		form.append(backButton);
+
+		cocktailList.append(form);
+	}
+
+	const cocktailList = document.getElementById('cocktail-list');
+
+	// Event listener to each cocktail list item
+    function displayCalculateWindow() {
+		document.querySelectorAll('.cocktail-list__item').forEach(item => {
+			item.addEventListener('click', event => {
+				cocktailList.innerHTML = '';
+	
+				const listItem = document.createElement('div');
+				const cocktailName = event.target.getAttribute('data-cocktail');
+				const cocktail = cocktails.find(cocktail => cocktail.name === cocktailName);
+	
+				listItem.innerHTML = showCocktail(cocktail);
+				listItem.classList.add('cocktail-list__item');
+				cocktailList.append(listItem);
+	
+				addFormToCalculateWindow();
+			});
+		});
+	}
+
+    // Function to display the list of cocktails
+    function displayCocktails(cocktails) {
+        cocktailList.innerHTML = '';
+        cocktails.forEach(cocktail => {
+            const listItem = document.createElement('div');
+            listItem.textContent = cocktail.name;
+            listItem.classList.add('cocktail-list__item');
+			listItem.setAttribute('data-cocktail', cocktail.name);
+            cocktailList.append(listItem);
+        });
+		displayCalculateWindow();
+    }
+
+    // Function to filter cocktails based on user input
+    function filterCocktails(inputText) {
+        const filteredCocktails = cocktails.filter(cocktail => {
+            return cocktail.name.toLowerCase().includes(inputText.toLowerCase());
+        });
+        displayCocktails(filteredCocktails);
+    }
+
+    // Event listener for form submission
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+        const inputText = document.getElementById('textInput').value;
+        filterCocktails(inputText);
+    });
+
+    // Event listener for input field changes
+    const inputField = document.getElementById('textInput');
+    inputField.addEventListener('input', function() {
+        const inputText = inputField.value;
+        filterCocktails(inputText);
+    });
+
+	displayCocktails(cocktails);
+});
