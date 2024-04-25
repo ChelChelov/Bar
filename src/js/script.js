@@ -190,9 +190,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayCocktails(cocktails) {
         cocktailList.innerHTML = '';
         cocktails.forEach(cocktail => {
-            const listItem = document.createElement('li');
+            const listItem = document.createElement('div');
             listItem.textContent = cocktail.name;
-            listItem.classList.add('cocktail-list__name');
+            listItem.classList.add('cocktail-list__item');
             cocktailList.append(listItem);
         });
     }
@@ -268,7 +268,7 @@ function calculateIngredients (total, cocktail) {
 			newCoctail[key] = parseFloat(newCoctail[key].toFixed(2));
 		}
 	});
-	return showCocktail(newCoctail);
+	return newCoctail;
 }
 
 //Function to take an object and return sum of the values of this object if the type of value is number
@@ -300,4 +300,5 @@ function showCocktail (cocktail) {
 
 // calculateIngredients(1000, cocktails[1]);
 // console.log(showCocktail(cocktails[1]));
-console.log(calculateIngredients(1000, cocktails[1]));
+
+console.log(showCocktail(calculateIngredients(1000, cocktails[1])));
