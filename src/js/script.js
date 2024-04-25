@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	];
 
+	// Add sorting by Alphabet
 	cocktails.sort((a, b) => {
 		const nameA = a.name.toLowerCase();
 		const nameB = b.name.toLowerCase();
@@ -183,7 +184,24 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (nameA > nameB) return 1;
 		return 0;
 	});
-	
+
+	// Event listener to each cocktail list item
+    function changeTextColorToRedOnClick() {
+        document.querySelectorAll('.cocktail-list__item').forEach(item => {
+            item.addEventListener('click', event => {
+                // Remove red color from all other cocktail list items
+                document.querySelectorAll('.cocktail-list__item').forEach(otherItem => {
+                    if (otherItem !== event.target) {
+                        otherItem.style.color = ''; // Reset color to default
+                    }
+                });
+
+                // Change the text color to red for the clicked item
+                event.target.style.color = 'red';
+            });
+        });
+    }
+
 	const cocktailList = document.getElementById('cocktail-list');
 
     // Function to display the list of cocktails
@@ -195,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
             listItem.classList.add('cocktail-list__item');
             cocktailList.append(listItem);
         });
+		changeTextColorToRedOnClick();
     }
 
     // Function to filter cocktails based on user input
@@ -224,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-//Test zone
+// Test zone
 
 const cocktails = 
 [
@@ -257,48 +276,48 @@ const cocktails =
 	}
 ];
 
-//Эта функция принимает остаток премикса и объект этого премикса и выводит в консоль кол-во ингредиентов в соответствии с остатком
-function calculateIngredients (total, cocktail) {
-	const newCoctail = {...cocktail};
-	let proportion = total / sumOfIngredients(newCoctail);
+	//Эта функция принимает остаток премикса и объект этого премикса и выводит в консоль кол-во ингредиентов в соответствии с остатком
+	function calculateIngredients (total, cocktail) {
+		const newCoctail = {...cocktail};
+		let proportion = total / sumOfIngredients(newCoctail);
 
-	Object.keys(newCoctail).forEach(key => {
-		if (typeof newCoctail[key] === 'number') {
-			newCoctail[key] *= proportion;
-			newCoctail[key] = parseFloat(newCoctail[key].toFixed(2));
-		}
-	});
-	return newCoctail;
-}
-
-//Function to take an object and return sum of the values of this object if the type of value is number
-function sumOfIngredients (cocktail) {
-	let sumOfIngr = 0;
-
-	Object.values(cocktail).forEach(item => {
-		if (typeof item === 'number') {
-			sumOfIngr += item;
-		}
-	});
-
-	return sumOfIngr;
-}
-
-//Function return string of all cocktail keys and values
-function showCocktail (cocktail) {
-	let presetList = '';
-
-	for (let key in cocktail) {
-		presetList += `${key}: ${cocktail[key]}\n`;
-		// if (cocktail[Object.values(cocktail).length - 1] != cocktail[key]) {
-		// 	presetList += '\n';
-		// }
+		Object.keys(newCoctail).forEach(key => {
+			if (typeof newCoctail[key] === 'number') {
+				newCoctail[key] *= proportion;
+				newCoctail[key] = parseFloat(newCoctail[key].toFixed(2));
+			}
+		});
+		return newCoctail;
 	}
 
-	return presetList;
-}
+	//Function to take an object and return sum of the values of this object if the type of value is number
+	function sumOfIngredients (cocktail) {
+		let sumOfIngr = 0;
+
+		Object.values(cocktail).forEach(item => {
+			if (typeof item === 'number') {
+				sumOfIngr += item;
+			}
+		});
+		return sumOfIngr;
+	}
+
+	//Function return string of all cocktail keys and values
+	function showCocktail(cocktail) {
+		let presetList = '';
+		let keys = Object.keys(cocktail);
+		let lastKey = keys[keys.length - 1]; 
+	
+		for (let key in cocktail) {
+			presetList += `${key}: ${cocktail[key]}`;
+			if (key !== lastKey) {
+				presetList += '\n'; 
+			}
+		}
+		return presetList;
+	}
 
 // calculateIngredients(1000, cocktails[1]);
 // console.log(showCocktail(cocktails[1]));
 
-console.log(showCocktail(calculateIngredients(1000, cocktails[1])));
+console.log(showCocktail(calculateIngredients(10000, cocktails[0])));
