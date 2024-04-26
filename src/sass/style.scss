@@ -1,5 +1,7 @@
 @import 'libs/bootstrap-reboot.min';
 
+$width: 280px;
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -12,15 +14,15 @@ main {
     align-items: center;
     flex-direction: column;
     margin: 15px 10px;
-    form {
+    .search-form, .calculate-form {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 280px;
+        width: $width;
         margin-bottom: 20px; 
     }
-    input[type="text"] {
-        width: 100%;
+    #textInput, #numberInput {
+        width: $width;
         padding: 10px;
         margin-bottom: 10px;
         border: 1px solid #ccc;
@@ -28,28 +30,46 @@ main {
         font-size: 16px;
         transition: border-color 0.3s ease;
     }
+    .calculate-button, .back-button {
+        margin-top: 15px;
+        width: $width;
+        background-color: #f0f0f0;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        @media (hover: hover) {
+            &:hover {
+                background-color: darken(#f0f0f0, 10%);
+            }
+        }
+    }
     .cocktail-list {
         display: flex;
         flex-direction: column;
         gap: 10px;
         align-items: center;
-        width: 280px;
-        span {
-            text-align: start;
-            color: red;
-        }
-        &__item {
+        width: $width;
+        &__item, &__item-info {
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px 20px;
             text-align: center;
             cursor: pointer;
-            width: 100%;
+            width: $width;
             transition: background-color .3s ease;
             @media (hover: hover) {
                 &:hover {
                     background-color: #e0e0e0;
+                }
+            }
+            &-info {
+                &:hover {
+                    background-color: #f0f0f0;
+                }
+                .red-text {
+                    color: red;
                 }
             }
         }

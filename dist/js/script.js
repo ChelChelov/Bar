@@ -218,13 +218,20 @@ document.addEventListener('DOMContentLoaded', function() {
 		let lastKey = keys[keys.length - 1]; 
 	
 		for (let key in cocktail) {
-			presetList += `${key}: ${cocktail[key]}`;
+			presetList += `${key}: `;
+			if (typeof cocktail[key] === 'number') {
+				presetList += `<span class = "red-text">${cocktail[key]}</span>`;
+			} else {
+				presetList += `${cocktail[key]}`;
+			}
 			if (key !== lastKey) {
 				presetList += '<br>'; 
 			}
 		}
 		return presetList;
 	}
+
+	const cocktailList = document.getElementById('cocktail-list');
 
 	// Function add form into cocktail-list
 	function addFormToCalculateWindow() {
@@ -236,13 +243,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		form.method = 'post';
 
 		const label = document.createElement('label');
-		label.htmlFor = 'number';
+		label.htmlFor = 'numberInput';
 		label.textContent = 'Остаток(мл):';
 
 		const input = document.createElement('input');
 		input.type = 'number';
-		input.id = 'number';
-		input.name = 'number';
+		input.id = 'numberInput';
+		input.name = 'numberInput';
 		input.required = true;
 
 		const submitButton = document.createElement('button');
@@ -251,9 +258,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		submitButton.textContent = 'Рассчитать';
 
 		const backButton = document.createElement('button');
-		backButton.type = 'button'; // Button type to prevent form submission
+		backButton.type = 'button'; 
 		backButton.classList.add('back-button');
-		backButton.textContent = 'Back to Cocktail List';
+		backButton.textContent = 'Вернуться к списку';
 		backButton.addEventListener('click', () => {
 			displayCocktails(cocktails);
 		});
@@ -267,23 +274,23 @@ document.addEventListener('DOMContentLoaded', function() {
 		cocktailList.append(form);
 	}
 
-	const cocktailList = document.getElementById('cocktail-list');
-
 	// Event listener to each cocktail list item
     function displayCalculateWindow() {
 		document.querySelectorAll('.cocktail-list__item').forEach(item => {
 			item.addEventListener('click', event => {
 				cocktailList.innerHTML = '';
 	
-				const listItem = document.createElement('div');
+				const itemInfo = document.createElement('div');
 				const cocktailName = event.target.getAttribute('data-cocktail');
 				const cocktail = cocktails.find(cocktail => cocktail.name === cocktailName);
 	
-				listItem.innerHTML = showCocktail(cocktail);
-				listItem.classList.add('cocktail-list__item');
-				cocktailList.append(listItem);
+				itemInfo.innerHTML = showCocktail(cocktail);
+				itemInfo.classList.add('cocktail-list__item-info');
+				cocktailList.append(itemInfo);
 	
 				addFormToCalculateWindow();
+				//I must add new eventListener to get users input from submitButton and use it's value in calculateIngredients (value, cocktail) 
+				// itemInfo.innerHTML = showCocktail(calculateIngredients (value, cocktail));
 			});
 		});
 	}
@@ -291,6 +298,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to display the list of cocktails
     function displayCocktails(cocktails) {
         cocktailList.innerHTML = '';
+
         cocktails.forEach(cocktail => {
             const listItem = document.createElement('div');
             listItem.textContent = cocktail.name;
