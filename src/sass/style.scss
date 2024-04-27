@@ -32,6 +32,9 @@ main {
         @include flex;
         width: $width;
         margin-bottom: 15px; 
+        label {
+            text-align: center;
+        }
     }
     #textInput, #numberInput {
         @include border-properties;
@@ -78,5 +81,11 @@ main {
                 }
             }
         }
+    }
+}
+
+@media(max-width: 575px) {
+    .container {
+        width: 320px;
     }
 }
