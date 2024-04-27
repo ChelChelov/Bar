@@ -1,6 +1,17 @@
 @import 'libs/bootstrap-reboot.min';
 
 $width: 280px;
+$bg-color: #f0f0f0;
+@mixin flex {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+@mixin border-properties {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
 
 * {
     box-sizing: border-box;
@@ -9,56 +20,51 @@ $width: 280px;
     font-family: 'Roboto', sans-serif;
 }
 
+.container {
+    width: 1140px;
+    margin: 0 auto;
+    @include flex;
+}
+
 main {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
     margin: 15px 10px;
     .search-form, .calculate-form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        @include flex;
         width: $width;
-        margin-bottom: 20px; 
+        margin-bottom: 15px; 
     }
     #textInput, #numberInput {
+        @include border-properties;
         width: $width;
         padding: 10px;
         margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
         font-size: 16px;
-        transition: border-color 0.3s ease;
     }
     .calculate-button, .back-button {
-        margin-top: 15px;
         width: $width;
-        background-color: #f0f0f0;
+        margin-top: 15px;
+        background-color: $bg-color;
         border: none;
         padding: 10px 20px;
         border-radius: 5px;
         cursor: pointer;
         @media (hover: hover) {
             &:hover {
-                background-color: darken(#f0f0f0, 10%);
+                background-color: darken($bg-color, 10%);
             }
         }
     }
     .cocktail-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
+        @include flex;
         width: $width;
+        gap: 10px;
         &__item, &__item-info {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            @include border-properties;
+            width: $width;
+            background-color: $bg-color;
             padding: 10px 20px;
             text-align: center;
             cursor: pointer;
-            width: $width;
-            transition: background-color .3s ease;
             @media (hover: hover) {
                 &:hover {
                     background-color: #e0e0e0;
@@ -66,7 +72,7 @@ main {
             }
             &-info {
                 &:hover {
-                    background-color: #f0f0f0;
+                    background-color: $bg-color;
                 }
                 .red-text {
                     color: red;
