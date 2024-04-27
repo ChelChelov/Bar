@@ -56,7 +56,6 @@ main {
     }
     .cocktail-list {
         @include flex;
-        width: $width;
         gap: 10px;
         &__item, &__item-info {
             @include border-properties;

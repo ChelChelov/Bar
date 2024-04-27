@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		return 0;
 	});
 
-	//Эта функция принимает остаток премикса и объект этого премикса и выводит в консоль кол-во ингредиентов в соответствии с остатком
+	// Function to calculate each of ingredient using input(total) and cocktail-object
 	function calculateIngredients (total, cocktail) {
 		const newCoctail = {...cocktail};
 		let proportion = total / sumOfIngredients(newCoctail);
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		return newCoctail;
 	}
 
-	//Function to take an object and return sum of the values of this object if the type of value is number
+	//Function to take an cocktail-object and return sum of the values of this cocktail if the type of value is number
 	function sumOfIngredients (cocktail) {
 		let sumOfIngr = 0;
 
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		cocktailList.append(form);
 	}
 
-	// Event listener to each cocktail list item
+	// Event listener to each cocktail list item. Function to show calculate-window
     function displayCalculateWindow() {
 		document.querySelectorAll('.cocktail-list__item').forEach(item => {
 			item.addEventListener('click', event => {
@@ -289,12 +289,20 @@ document.addEventListener('DOMContentLoaded', function() {
 				cocktailList.append(itemInfo);
 	
 				addFormToCalculateWindow();
-				//I must add new eventListener to get users input from submitButton and use it's value in calculateIngredients (value, cocktail) 
-				// itemInfo.innerHTML = showCocktail(calculateIngredients (value, cocktail));
+				displayCalculatedCocktail(itemInfo, cocktail);
 			});
 		});
 	}
 
+	// Function to replace cocktail-info to calculated cocktail-info using input-value
+	function displayCalculatedCocktail (itemInfo, cocktailObject) {
+		const calculateForm = document.querySelector('.calculate-form');
+		calculateForm.addEventListener('submit', function(event) {
+			event.preventDefault(); 
+			const inputValue = document.getElementById('numberInput').value;
+			itemInfo.innerHTML = showCocktail(calculateIngredients(inputValue, cocktailObject));
+		});
+	}
     // Function to display the list of cocktails
     function displayCocktails(cocktails) {
         cocktailList.innerHTML = '';
@@ -318,17 +326,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event listener for form submission
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(event) {
+    const searchForm = document.querySelector('.search-form');
+    searchForm.addEventListener('submit', function(event) {
         event.preventDefault(); 
         const inputText = document.getElementById('textInput').value;
         filterCocktails(inputText);
     });
 
     // Event listener for input field changes
-    const inputField = document.getElementById('textInput');
-    inputField.addEventListener('input', function() {
-        const inputText = inputField.value;
+    const inputSearchField = document.getElementById('textInput');
+    inputSearchField.addEventListener('input', function() {
+        const inputText = inputSearchField.value;
         filterCocktails(inputText);
     });
 
